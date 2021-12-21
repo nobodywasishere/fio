@@ -8,4 +8,4 @@
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
 -- 
 --  FILE.EXTENSION
---  Charles DePalma | Micheal Riegart | Zev Pogrebin
+--  Charles DePalma | Michael Riegert | Zev Pogrebin
