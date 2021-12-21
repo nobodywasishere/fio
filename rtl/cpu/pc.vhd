@@ -1,3 +1,15 @@
+--       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___ 
+--      _/\/\_________     ___/\/\___     _/\/\____/\/\_  
+--     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_   
+--    _/\/\_________     ___/\/\___     _/\/\____/\/\_    
+--   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___     
+--  ______________     __________     ______________      
+--  LEGv8 CPU Assembler, CPU, and I/O System
+--  "I want to take responsibility for my work to the very end" --Fio Piccolo
+-- 
+--  pc.vhd
+--  Charles DePalma | Micheal Riegart | Zev Pogrebin
+
 library ieee;
 use ieee.std_logic_1164.all;
 
