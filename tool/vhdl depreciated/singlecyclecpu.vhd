@@ -10,6 +10,8 @@
 --  singlecyclecpu.vhd
 --  Charles DePalma | Micheal Riegart | Zev Pogrebin
 
+-- DEPRECIATED FILE
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
