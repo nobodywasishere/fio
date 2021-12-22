@@ -8,7 +8,7 @@
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
 -- 
 --  zerocheck.vhd
---  Charles DePalma | Micheal Riegart | Zev Pogrebin
+--  Charles DePalma | Michael Riegert | Zev Pogrebin
 
 library IEEE;
 use IEEE.std_logic_1164.all;

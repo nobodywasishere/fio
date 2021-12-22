@@ -8,7 +8,7 @@
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
 -- 
 --  mux64.vhd
---  Charles DePalma | Micheal Riegart | Zev Pogrebin
+--  Charles DePalma | Michael Riegert | Zev Pogrebin
 
 library ieee;
 use ieee.std_logic_1164.all;

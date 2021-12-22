@@ -3,3 +3,4 @@
 *.vcd
 *.ghw
 lego
+.DS_Store
