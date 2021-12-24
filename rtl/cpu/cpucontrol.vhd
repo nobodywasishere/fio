@@ -32,7 +32,9 @@ port(Opcode   : in  STD_LOGIC_VECTOR(10 downto 0);
      RegWrite : out STD_LOGIC;
      UBranch  : out STD_LOGIC; -- This is unconditional
      ALUOp    : out STD_LOGIC_VECTOR(1 downto 0);
-     Shift    : out STD_LOGIC
+     Shift    : out STD_LOGIC;
+     MEMOp    : out STD_LOGIC;
+     MEMExt   : out STD_LOGIC
 );
 end CPUControl;
 
@@ -40,24 +42,26 @@ architecture dataflow of CPUControl is
 
 type INSTTYPE is (RF, LD, ST, CB, UB, SH, IT, NONE);
 signal op : INSTTYPE;
+signal load : std_logic;
 
 begin
     op <= NONE when stall = '1' else
           CB   when Opcode(10 downto 4) = "1011010" else
           UB   when Opcode(10 downto 5) = "000101" else
-          LD   when Opcode = "11111000010" else
-          ST   when Opcode = "11111000000" else
+          DT   when (Opcode and "00111111001") = "11111000000" else
           RF   when (Opcode and "10011110111") = "10001010000" else
           IT   when (Opcode and "10011100110") = "10010000000" else
           SH   when (Opcode and "11111111110") = "11010011010" else
 	     NONE;
 
+    load     <= (Opcode(2) or Opcode(1)
     RegDst   <= '0' when op = RF else '1';
     ALUSrc   <= '0' when op = RF or op = CB or op = NONE else '1';
     MemtoReg <= '0' when op = RF or op = SH or op = IT or op = NONE else '1';
-    RegWrite <= '1' when op = RF or op = LD or op = SH or op = IT else '0';
-    MemRead  <= '1' when op = LD else '0';
-    MemWrite <= '1' when op = ST else '0';
+    RegWrite <= '1' when op = RF or (op = DT and load = '1') or op = SH 
+                or op = IT else '0';
+    MemRead  <= '1' when op = DT and load = '1' else '0';
+    MemWrite <= '1' when op = DT and load = '0' else '0';
     CBranch  <= '1' when op = CB else '0';
     UBranch  <= '1' when op = UB else '0';
     Shift    <= '1' when op = SH or op = RF else '0';
@@ -65,4 +69,6 @@ begin
                 "11" when op = SH else
                 "01" when op = CB else 
                 "00";
+    MEMOp    <= Opcode(10 downto 9); --00 byte, 01 hw, 10 w, 11 64b
+    MEMExt   <= Opcode(2);
 end;

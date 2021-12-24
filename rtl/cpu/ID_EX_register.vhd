@@ -38,6 +38,8 @@ port(
     ID_curr_PC    : in std_logic_vector(63 downto 0);
     ID_shift      : in std_logic;
     ID_shamt      : in std_logic_vector(5 downto 0) := (others => '0');
+    ID_MEMOp      : in std_logic_vector(1 downto 0);
+    ID_MEMExt     : in std_logic;
     --outputs
     EX_ubranch    : out std_logic;
     EX_cbranch    : out std_logic;
@@ -56,7 +58,9 @@ port(
     EX_immediate  : out std_logic_vector(63 downto 0);
     EX_curr_PC    : out std_logic_vector(63 downto 0);
     EX_shift      : out std_logic;
-    EX_shamt      : out std_logic_vector(5 downto 0)
+    EX_shamt      : out std_logic_vector(5 downto 0);
+    EX_MEMOp      : out std_logic_vector(1 downto 0);
+    EX_MEMExt     : out std_logic
 );
 end IDEXRegister;
 
@@ -83,6 +87,8 @@ begin
             EX_immediate  <= (others => '0');
             EX_curr_PC    <= (others => '0');
             EX_shamt      <= (others => '0');
+            EX_MEMOp      <= (others => '0');
+            EX_MEMExt     <= '0';
         elsif rising_edge(clk) then
             EX_ubranch    <= ID_ubranch;
             EX_cbranch    <= ID_cbranch;
@@ -102,6 +108,8 @@ begin
             EX_curr_PC    <= ID_curr_PC;
             EX_shift      <= ID_shift;
             EX_shamt      <= ID_shamt;
+            EX_MEMOp      <= ID_MEMOp;
+            EX_MEMExt     <= ID_MEMExt;
         end if;
     end process;
 end;

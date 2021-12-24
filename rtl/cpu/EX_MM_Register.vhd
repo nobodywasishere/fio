@@ -31,6 +31,8 @@ port(
     EX_ALU_zero     : in std_logic;
     EX_ALU_result   : in std_logic_vector(63 downto 0);
     EX_branch_PC    : in std_logic_vector(63 downto 0);
+    EX_MEMOp        : in std_logic_vector(1  downto 0);
+    EX_MEMExt       : in std_logic;
     --outputs
     MM_ubranch      : out std_logic;
     MM_cbranch      : out std_logic;
@@ -42,7 +44,9 @@ port(
     MM_RD2          : out std_logic_vector(63 downto 0);
     MM_ALU_zero     : out std_logic;
     MM_ALU_result   : out std_logic_vector(63 downto 0);
-    MM_branch_PC    : out std_logic_vector(63 downto 0)
+    MM_branch_PC    : out std_logic_vector(63 downto 0);
+    MM_MEMOp        : out std_logic_vector(1  downto 0);
+    MM_MEMExt       : out std_logic
 );
 end EXMMRegister;
 
@@ -62,6 +66,8 @@ begin
             MM_ALU_zero     <= '0';
             MM_ALU_result   <= (others => '0');
             MM_branch_PC    <= (others => '0');
+            MM_MEMOp        <= (others => '0');
+            MM_MEMExt       <= '0';
         elsif rising_edge(clk) then
             MM_ubranch      <= EX_ubranch;
             MM_cbranch      <= EX_cbranch;
@@ -74,6 +80,8 @@ begin
             MM_ALU_zero     <= EX_ALU_zero;
             MM_ALU_result   <= EX_ALU_result;
             MM_branch_PC    <= EX_branch_PC;
+            MM_MEMOp        <= EX_MEMOp;
+            MM_MEMExt       <= EX_MEMExt;
         end if;
     end process;
 end;

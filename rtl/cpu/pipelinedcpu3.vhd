@@ -117,6 +117,8 @@ signal ID_opcode   : std_logic_vector(10 downto 0);
 signal ID_ALUOpShort : std_logic_vector(1 downto 0);
 signal ID_Stall      : std_logic;
 signal ID_shift      : std_logic := '0';
+signal ID_MEMOp      : std_logic_vector(1 downto 0) := "11";
+signal ID_MEMExt     : std_logic := '0';
 
 --EX Stage
 signal EX_ubranch  : std_logic := '0';
@@ -132,12 +134,16 @@ signal EX_ALUOpLong  : std_logic_vector(3 downto 0);
 signal EX_forwardA   : std_logic_vector(1 downto 0);
 signal EX_forwardB   : std_logic_vector(1 downto 0);
 signal EX_shift      : std_logic := '1';
+signal EX_MEMOp      : std_logic_vector(1 downto 0) := "11";
+signal EX_MEMExt     : std_logic := '0';
 
 --MEM Stage
 signal MM_memread  : std_logic := '0';
 signal MM_memwrite : std_logic := '0';
 signal MM_memtoreg : std_logic := '0';
 signal MM_regwrite : std_logic := '0';
+signal MM_MEMOp    : std_logic_vector(1 downto 0) := "11";
+signal MM_MEMExt   : std_logic := '0';
 
 --WB Stage
 signal WB_memtoreg : std_logic := '0';
@@ -306,6 +312,8 @@ component IDEXRegister is
         ID_curr_PC    : in std_logic_vector(63 downto 0);
         ID_shift      : in std_logic;
         ID_shamt      : in std_logic_vector(5 downto 0) := (others => '0');
+        ID_MEMOp      : in std_logic_vector(1 downto 0);
+        ID_MEMExt     : in std_logic;
         --outputs
         EX_ubranch    : out std_logic;
         EX_cbranch    : out std_logic;
@@ -315,16 +323,18 @@ component IDEXRegister is
         EX_ALUsrc     : out std_logic;
         EX_regwrite   : out std_logic;
         EX_opcode     : out std_logic_vector(10 downto 0);
-        EX_ALUOpShort : out std_logic_vector(1 downto 0);
-        EX_WR         : out std_logic_vector(4 downto 0);
-        EX_RR1        : out std_logic_vector(4 downto 0);
-        EX_RR2        : out std_logic_vector(4 downto 0);
+        EX_ALUOpShort : out std_logic_vector(1  downto 0);
+        EX_WR         : out std_logic_vector(4  downto 0);
+        EX_RR1        : out std_logic_vector(4  downto 0);
+        EX_RR2        : out std_logic_vector(4  downto 0);
         EX_RD1        : out std_logic_vector(63 downto 0);
         EX_RD2        : out std_logic_vector(63 downto 0);
         EX_immediate  : out std_logic_vector(63 downto 0);
         EX_curr_PC    : out std_logic_vector(63 downto 0);
         EX_shift      : out std_logic;
-        EX_shamt      : out std_logic_vector(5 downto 0)
+        EX_shamt      : out std_logic_vector(5  downto 0);
+        EX_MEMOp      : out std_logic_vector(1  downto 0);
+        EX_MEMExt     : out std_logic
     );
 end component;
 
@@ -345,6 +355,8 @@ component EXMMRegister is
         EX_ALU_zero     : in std_logic;
         EX_ALU_result   : in std_logic_vector(63 downto 0);
         EX_branch_PC    : in std_logic_vector(63 downto 0);
+        EX_MEMOp        : in std_logic_vector(1  downto 0);
+        EX_MEMExt       : in std_logic;
         --outputs
         MM_ubranch      : out std_logic;
         MM_cbranch      : out std_logic;
@@ -356,7 +368,9 @@ component EXMMRegister is
         MM_RD2          : out std_logic_vector(63 downto 0);
         MM_ALU_zero     : out std_logic;
         MM_ALU_result   : out std_logic_vector(63 downto 0);
-        MM_branch_PC    : out std_logic_vector(63 downto 0)
+        MM_branch_PC    : out std_logic_vector(63 downto 0);
+        MM_MEMOp        : out std_logic_vector(1  downto 0)
+        MM_MEMExt       : out std_logic
     );
 end component;
 
@@ -616,6 +630,9 @@ begin
                     std_logic_vector(resize(unsigned(ID_instruction(20 downto 12)), 64))
                     when (ID_memread or ID_memwrite) = '1' else
                     std_logic_vector(resize(signed(ID_instruction(21 downto 10)), 64));
+
+    --Memory Handling Outputs
+    
 
     --Forwarding
     with EX_forwardA select
