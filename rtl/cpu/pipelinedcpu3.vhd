@@ -27,6 +27,7 @@ entity PipelinedCPU3 is
         DMEM_READ_DATA  : in std_logic_vector(63 downto 0);
         DMEM_READ       : out std_logic;
         DMEM_WRITE      : out std_logic;
+        DMEM_OPCODE     : out std_logic_vector(2 downto 0);
         --Probe ports used for testing
         DEBUG_IF_FLUSH  : out std_logic;
         DEBUG_REG_EQUAL : out std_logic;
@@ -401,6 +402,7 @@ begin
     DMEM_READ       <= MM_memread;
     DMEM_WRITE      <= MM_memwrite;
     DMEM_ADDR       <= MM_ALU_result;
+    DMEM_OPCODE     <= MM_MEMOp & MM_MEMExt;
 
     IF_instruction  <= IMEM_DATA;
     IMEM_ADDR       <= IF_curr_PC;
@@ -538,6 +540,8 @@ begin
         ID_curr_PC    => (others => '0'),
         ID_shift      => ID_shift,
         ID_shamt      => ID_shamt,
+        ID_MEMOp      => ID_MEMOp,
+        ID_MEMExt     => ID_MEMExt,
         EX_ubranch    => EX_ubranch,
         EX_cbranch    => EX_cbranch,
         EX_memread    => EX_memread,
@@ -554,7 +558,9 @@ begin
         EX_RD2        => EX_RD2,
         EX_immediate  => EX_immediate,
         EX_shift      => EX_shift,
-        EX_shamt      => EX_shamt
+        EX_shamt      => EX_shamt,
+        EX_MEMOp      => EX_MEMOp,
+        EX_MEMExt     => EX_MEMExt
     );
 
     EXMM_0 : EXMMRegister port map(
@@ -571,6 +577,8 @@ begin
         EX_ALU_zero     => EX_ALU_zero,
         EX_ALU_result   => EX_ALU_result,
         EX_branch_PC    => (others => '0'),
+        EX_MEMOp        => EX_MEMOp,
+        EX_MEMExt       => EX_MEMExt,
         MM_memread      => MM_memread,
         MM_memwrite     => MM_memwrite,
         MM_memtoreg     => MM_memtoreg,
@@ -578,7 +586,9 @@ begin
         MM_WR           => MM_WR,
         MM_RD2          => MM_RD2,
         MM_ALU_zero     => MM_ALU_zero,
-        MM_ALU_result   => MM_ALU_result
+        MM_ALU_result   => MM_ALU_result,
+        MM_MEMOp        => MM_MEMOp,
+        MM_MEMExt       => MM_MEMExt
     );
 
     MMWB_0 : MMWBRegister port map(
