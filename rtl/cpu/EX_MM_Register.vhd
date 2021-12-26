@@ -25,6 +25,7 @@ port(
     EX_memread      : in std_logic;
     EX_memwrite     : in std_logic;
     EX_memtoreg     : in std_logic;
+    EX_multoreg     : in std_logic;
     EX_regwrite     : in std_logic;
     EX_WR           : in std_logic_vector(4  downto 0);
     EX_RD2          : in std_logic_vector(63 downto 0);
@@ -39,6 +40,7 @@ port(
     MM_memread      : out std_logic;
     MM_memwrite     : out std_logic;
     MM_memtoreg     : out std_logic;
+    MM_multoreg     : out std_logic;
     MM_regwrite     : out std_logic;
     MM_WR           : out std_logic_vector(4  downto 0);
     MM_RD2          : out std_logic_vector(63 downto 0);
@@ -60,6 +62,7 @@ begin
             MM_memread      <= '0';
             MM_memwrite     <= '0';
             MM_memtoreg     <= '0';
+            MM_multoreg     <= '0';
             MM_regwrite     <= '0';
             MM_WR           <= (others => '0');
             MM_RD2          <= (others => '0');
@@ -74,6 +77,7 @@ begin
             MM_memread      <= EX_memread;
             MM_memwrite     <= EX_memwrite;
             MM_memtoreg     <= EX_memtoreg;
+            MM_multoreg     <= EX_multoreg;
             MM_regwrite     <= EX_regwrite;
             MM_WR           <= EX_WR;
             MM_RD2          <= EX_RD2;

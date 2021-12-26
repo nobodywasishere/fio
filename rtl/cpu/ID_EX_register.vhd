@@ -25,6 +25,7 @@ port(
     ID_memread    : in std_logic;
     ID_memwrite   : in std_logic;
     ID_memtoreg   : in std_logic;
+    ID_multoreg   : in std_logic;
     ID_ALUsrc     : in std_logic;
     ID_regwrite   : in std_logic;
     ID_opcode     : in std_logic_vector(10 downto 0);
@@ -46,6 +47,7 @@ port(
     EX_memread    : out std_logic;
     EX_memwrite   : out std_logic;
     EX_memtoreg   : out std_logic;
+    EX_multoreg   : out std_logic;
     EX_ALUsrc     : out std_logic;
     EX_regwrite   : out std_logic;
     EX_opcode     : out std_logic_vector(10 downto 0);
@@ -74,6 +76,7 @@ begin
             EX_memread    <= '0';
             EX_memwrite   <= '0';
             EX_memtoreg   <= '0';
+            EX_multoreg   <= '0';
             EX_ALUsrc     <= '0';
             EX_regwrite   <= '0';
             EX_shift      <= '0';
@@ -95,6 +98,7 @@ begin
             EX_memread    <= ID_memread;
             EX_memwrite   <= ID_memwrite;
             EX_memtoreg   <= ID_memtoreg;
+            EX_multoreg   <= ID_multoreg;
             EX_ALUsrc     <= ID_ALUsrc;
             EX_regwrite   <= ID_regwrite;
             EX_opcode     <= ID_opcode;

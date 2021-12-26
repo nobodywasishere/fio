@@ -112,6 +112,7 @@ signal ID_regdst   : std_logic := '0';
 signal ID_memread  : std_logic := '0';
 signal ID_memwrite : std_logic := '0';
 signal ID_memtoreg : std_logic := '0';
+signal ID_multoreg : std_logic := '0';
 signal ID_ALUsrc   : std_logic := '0';
 signal ID_regwrite : std_logic := '0';
 signal ID_opcode   : std_logic_vector(10 downto 0);
@@ -127,6 +128,7 @@ signal EX_cbranch  : std_logic := '0';
 signal EX_memread  : std_logic := '0';
 signal EX_memwrite : std_logic := '0';
 signal EX_memtoreg : std_logic := '0';
+signal EX_multoreg : std_logic := '0';
 signal EX_ALUsrc   : std_logic := '0';
 signal EX_regwrite : std_logic := '0';
 signal EX_opcode   : std_logic_vector(10 downto 0);
@@ -142,11 +144,13 @@ signal EX_MEMExt     : std_logic := '0';
 signal MM_memread  : std_logic := '0';
 signal MM_memwrite : std_logic := '0';
 signal MM_memtoreg : std_logic := '0';
+signal MM_multoreg : std_logic := '0';
 signal MM_regwrite : std_logic := '0';
 signal MM_MEMOp    : std_logic_vector(1 downto 0) := "11";
 signal MM_MEMExt   : std_logic := '0';
 
 --WB Stage
+signal WB_multoreg : std_logic := '0';
 signal WB_memtoreg : std_logic := '0';
 signal WB_regwrite : std_logic := '0';
 
@@ -300,6 +304,7 @@ component IDEXRegister is
         ID_memread    : in std_logic;
         ID_memwrite   : in std_logic;
         ID_memtoreg   : in std_logic;
+        ID_multoreg   : in std_logic;
         ID_ALUsrc     : in std_logic;
         ID_regwrite   : in std_logic;
         ID_opcode     : in std_logic_vector(10 downto 0);
@@ -321,6 +326,7 @@ component IDEXRegister is
         EX_memread    : out std_logic;
         EX_memwrite   : out std_logic;
         EX_memtoreg   : out std_logic;
+        EX_multoreg   : out std_logic;
         EX_ALUsrc     : out std_logic;
         EX_regwrite   : out std_logic;
         EX_opcode     : out std_logic_vector(10 downto 0);
@@ -350,6 +356,7 @@ component EXMMRegister is
         EX_memread      : in std_logic;
         EX_memwrite     : in std_logic;
         EX_memtoreg     : in std_logic;
+        EX_multoreg     : in std_logic;
         EX_regwrite     : in std_logic;
         EX_WR           : in std_logic_vector(4  downto 0);
         EX_RD2          : in std_logic_vector(63 downto 0);
@@ -364,6 +371,7 @@ component EXMMRegister is
         MM_memread      : out std_logic;
         MM_memwrite     : out std_logic;
         MM_memtoreg     : out std_logic;
+        MM_multoreg     : out std_logic;
         MM_regwrite     : out std_logic;
         MM_WR           : out std_logic_vector(4  downto 0);
         MM_RD2          : out std_logic_vector(63 downto 0);
@@ -382,12 +390,14 @@ component MMWBRegister is
         rst : in STD_LOGIC;
         --inputs
         MM_memtoreg     : in std_logic;
+        MM_multoreg     : in std_logic;
         MM_regwrite     : in std_logic;
         MM_WR           : in std_logic_vector(4  downto 0);
         MM_ALU_result   : in std_logic_vector(63 downto 0);
         MM_memory_data  : in std_logic_vector(63 downto 0);
         --outputs
         WB_memtoreg     : out std_logic;
+        WB_multoreg     : out std_logic;
         WB_regwrite     : out std_logic;
         WB_WR           : out std_logic_vector(4  downto 0);
         WB_ALU_result   : out std_logic_vector(63 downto 0);
@@ -436,6 +446,7 @@ begin
         CBranch         => ID_cbranch,
         MemRead         => ID_memread,
         MemtoReg        => ID_memtoreg,
+        MultoReg        => ID_MultoReg,
         MemWrite        => ID_memwrite,
         ALUSrc          => ID_ALUsrc,
         RegWrite        => ID_regwrite,
@@ -527,6 +538,7 @@ begin
         ID_memread    => ID_memread,
         ID_memwrite   => ID_memwrite,
         ID_memtoreg   => ID_memtoreg,
+        ID_multoreg   => ID_multoreg,
         ID_ALUsrc     => ID_ALUsrc,
         ID_regwrite   => ID_regwrite,
         ID_opcode     => ID_opcode,
@@ -547,6 +559,7 @@ begin
         EX_memread    => EX_memread,
         EX_memwrite   => EX_memwrite,
         EX_memtoreg   => EX_memtoreg,
+        EX_multoreg   => EX_multoreg,
         EX_ALUsrc     => EX_ALUsrc,
         EX_regwrite   => EX_regwrite,
         EX_opcode     => EX_opcode,
@@ -571,6 +584,7 @@ begin
         EX_memread      => EX_memread,
         EX_memwrite     => EX_memwrite,
         EX_memtoreg     => EX_memtoreg,
+        EX_multoreg     => EX_multoreg,
         EX_regwrite     => EX_regwrite,
         EX_WR           => EX_WR,
         EX_RD2          => EX_FWDED_RD2,
@@ -582,6 +596,7 @@ begin
         MM_memread      => MM_memread,
         MM_memwrite     => MM_memwrite,
         MM_memtoreg     => MM_memtoreg,
+        MM_multoreg     => MM_multoreg,
         MM_regwrite     => MM_regwrite,
         MM_WR           => MM_WR,
         MM_RD2          => MM_RD2,
@@ -595,11 +610,13 @@ begin
         clk             => clk,
         rst             => rst,
         MM_memtoreg     => MM_memtoreg,
+        MM_multoreg     => MM_multoreg,
         MM_regwrite     => MM_regwrite,
         MM_WR           => MM_WR,
         MM_ALU_result   => MM_ALU_result,
         MM_memory_data  => MM_memory_data,
         WB_memtoreg     => WB_memtoreg,
+        WB_multoreg     => WB_multoreg,
         WB_regwrite     => WB_regwrite,
         WB_WR           => WB_WR,
         WB_ALU_result   => WB_ALU_result,
@@ -616,7 +633,7 @@ begin
                 EX_immediate;
 
     --Register read data
-    WB_WD <= WB_ALU_result when WB_memtoreg = '0' else
+    WB_WD <= WB_ALU_result when (WB_memtoreg and WB_multoreg) = '0' else --TODO ADD MULIPLY RESULT
              WB_memory_data;
 
     --Branch Combinational Logic --TODO May need forwarding

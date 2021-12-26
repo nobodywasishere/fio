@@ -27,6 +27,7 @@ port(Opcode   : in  STD_LOGIC_VECTOR(10 downto 0);
      CBranch  : out STD_LOGIC;  --conditional
      MemRead  : out STD_LOGIC;
      MemtoReg : out STD_LOGIC;
+     MultoReg : out STD_LOGIC;
      MemWrite : out STD_LOGIC;
      ALUSrc   : out STD_LOGIC;
      RegWrite : out STD_LOGIC;
@@ -41,8 +42,9 @@ end CPUControl;
 architecture dataflow of CPUControl is
 
 type INSTTYPE is (RF, LD, ST, CB, UB, SH, IT, NONE);
-signal op : INSTTYPE;
-signal load : std_logic;
+signal op    : INSTTYPE;
+signal load  : boolean;
+signal arith : boolean;
 
 begin
     op <= NONE when stall = '1' else
@@ -52,13 +54,16 @@ begin
           RF   when (Opcode and "10011110111") = "10001010000" else
           IT   when (Opcode and "10011100110") = "10010000000" else
           SH   when (Opcode and "11111111110") = "11010011010" else
-	     NONE;
+	      NONE;
 
-    load     <= (Opcode(2) or Opcode(1)
+    -- Special case assignments
+    load     <= op = DT and (Opcode(2) or Opcode(1) = '1');
+    arith    <= op = RF and ((Opcode and "11111110000") = "10011010000")  ;
     RegDst   <= '0' when op = RF else '1';
     ALUSrc   <= '0' when op = RF or op = CB or op = NONE else '1';
     MemtoReg <= '0' when op = RF or op = SH or op = IT or op = NONE else '1';
-    RegWrite <= '1' when op = RF or (op = DT and load = '1') or op = SH 
+    MultoReg <= '1' when arith else '0';
+    RegWrite <= '1' when op = RF or load or op = SH 
                 or op = IT else '0';
     MemRead  <= '1' when op = DT and load = '1' else '0';
     MemWrite <= '1' when op = DT and load = '0' else '0';
