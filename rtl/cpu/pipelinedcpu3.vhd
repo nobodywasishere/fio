@@ -164,6 +164,7 @@ component CPUControl is
         CBranch  : out STD_LOGIC;  --conditional
         MemRead  : out STD_LOGIC;
         MemtoReg : out STD_LOGIC;
+        MultoReg : out STD_LOGIC;
         MemWrite : out STD_LOGIC;
         ALUSrc   : out STD_LOGIC;
         RegWrite : out STD_LOGIC;
@@ -378,7 +379,7 @@ component EXMMRegister is
         MM_ALU_zero     : out std_logic;
         MM_ALU_result   : out std_logic_vector(63 downto 0);
         MM_branch_PC    : out std_logic_vector(63 downto 0);
-        MM_MEMOp        : out std_logic_vector(1  downto 0)
+        MM_MEMOp        : out std_logic_vector(1  downto 0);
         MM_MEMExt       : out std_logic
     );
 end component;

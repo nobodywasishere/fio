@@ -34,14 +34,14 @@ port(Opcode   : in  STD_LOGIC_VECTOR(10 downto 0);
      UBranch  : out STD_LOGIC; -- This is unconditional
      ALUOp    : out STD_LOGIC_VECTOR(1 downto 0);
      Shift    : out STD_LOGIC;
-     MEMOp    : out STD_LOGIC;
+     MEMOp    : out STD_LOGIC_VECTOR(1 downto 0);
      MEMExt   : out STD_LOGIC
 );
 end CPUControl;
 
 architecture dataflow of CPUControl is
 
-type INSTTYPE is (RF, LD, ST, CB, UB, SH, IT, NONE);
+type INSTTYPE is (RF, LD, ST, CB, UB, SH, IT, DT, NONE);
 signal op    : INSTTYPE;
 signal load  : boolean;
 signal arith : boolean;
@@ -57,7 +57,7 @@ begin
 	      NONE;
 
     -- Special case assignments
-    load     <= op = DT and (Opcode(2) or Opcode(1) = '1');
+    load     <= op = DT and ((Opcode(2) or Opcode(1)) = '1');
     arith    <= op = RF and ((Opcode and "11111110000") = "10011010000")  ;
     RegDst   <= '0' when op = RF else '1';
     ALUSrc   <= '0' when op = RF or op = CB or op = NONE else '1';
@@ -65,8 +65,8 @@ begin
     MultoReg <= '1' when arith else '0';
     RegWrite <= '1' when op = RF or load or op = SH 
                 or op = IT else '0';
-    MemRead  <= '1' when op = DT and load = '1' else '0';
-    MemWrite <= '1' when op = DT and load = '0' else '0';
+    MemRead  <= '1' when op = DT and load else '0';
+    MemWrite <= '1' when op = DT and not load else '0';
     CBranch  <= '1' when op = CB else '0';
     UBranch  <= '1' when op = UB else '0';
     Shift    <= '1' when op = SH or op = RF else '0';
