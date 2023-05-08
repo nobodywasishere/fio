@@ -1,14 +1,14 @@
---       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___ 
---      _/\/\_________     ___/\/\___     _/\/\____/\/\_  
---     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_   
---    _/\/\_________     ___/\/\___     _/\/\____/\/\_    
---   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___     
---  ______________     __________     ______________      
+--       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___
+--      _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_
+--    _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___
+--  ______________     __________     ______________
 --  LEGv8 CPU Assembler, CPU, and I/O System
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
--- 
+--
 --  cpucontrol.vhd
---  Charles DePalma | Michael Riegert | Zev Pogrebin
+--  Charles DePalma | Margret Riegert | Zev Pogrebin
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -70,9 +70,9 @@ begin
     CBranch  <= '1' when op = CB else '0';
     UBranch  <= '1' when op = UB else '0';
     Shift    <= '1' when op = SH or op = RF else '0';
-    ALUOp    <= "10" when op = RF or op = IT else 
+    ALUOp    <= "10" when op = RF or op = IT else
                 "11" when op = SH else
-                "01" when op = CB else 
+                "01" when op = CB else
                 "00";
     MEMOp    <= Opcode(10 downto 9); --00 byte, 01 hw, 10 w, 11 64b
     MEMExt   <= Opcode(2);

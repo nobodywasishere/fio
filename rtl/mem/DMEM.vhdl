@@ -1,14 +1,14 @@
---       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___ 
---      _/\/\_________     ___/\/\___     _/\/\____/\/\_  
---     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_   
---    _/\/\_________     ___/\/\___     _/\/\____/\/\_    
---   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___     
---  ______________     __________     ______________      
+--       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___
+--      _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_
+--    _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___
+--  ______________     __________     ______________
 --  LEGv8 CPU Assembler, CPU, and I/O System
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
--- 
+--
 --  FILE.EXTENSION
---  Charles DePalma | Michael Riegert | Zev Pogrebin
+--  Charles DePalma | Margret Riegert | Zev Pogrebin
 
 
 library IEEE;
@@ -58,7 +58,7 @@ architecture arch of DMEM is
     signal RAM_ARR : RAM_ARR_TYPE := (others => (others => '0'));
     signal SEG_ARR : SEG_ARR_TYPE := (others => (others => '0'));
 
-    -- signal 
+    -- signal
     signal SEG_I : std_logic_vector(3 downto 0) := (others => '0');
     signal SEG_D : std_logic_vector(7 downto 0) := (others => '0');
     signal SEG_A : std_logic_vector(7 downto 0) := not "00000001";
@@ -73,7 +73,7 @@ begin
 
     LEDS <= LED_ARR;
 
-    process (Clock) 
+    process (Clock)
         variable uaddr : unsigned(11 downto 0) := x"000";
     begin
         if rising_edge(Clock) then

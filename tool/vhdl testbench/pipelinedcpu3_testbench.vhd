@@ -1,14 +1,14 @@
---       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___ 
---      _/\/\_________     ___/\/\___     _/\/\____/\/\_  
---     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_   
---    _/\/\_________     ___/\/\___     _/\/\____/\/\_    
---   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___     
---  ______________     __________     ______________      
+--       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___
+--      _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_
+--    _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___
+--  ______________     __________     ______________
 --  LEGv8 CPU Assembler, CPU, and I/O System
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
--- 
+--
 --  pipelinedcpu3_testbench.vhd
---  Charles DePalma | Michael Riegert | Zev Pogrebin
+--  Charles DePalma | Margret Riegert | Zev Pogrebin
 
 library ieee;
 use IEEE.std_logic_1164.all;
@@ -48,7 +48,7 @@ signal DMEM_READ            : std_logic;
 signal DMEM_WRITE           : std_logic;
 
 signal IMEM_ADDR            : std_logic_vector(63 downto 0);
-signal IMEM_DATA            : std_logic_vector(31 downto 0);        
+signal IMEM_DATA            : std_logic_vector(31 downto 0);
 
 component PipelinedCPU3 is
     port(
@@ -93,7 +93,7 @@ component PipelinedCPU3 is
         );
     end component;
 
-    component DMEM is 
+    component DMEM is
         -- The data memory is a byte addressble, big-endian, read/write memory with a single address port
         -- It may not read and write at the same time
         generic(NUM_BYTES : integer := 512);

@@ -1,14 +1,14 @@
---       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___ 
---      _/\/\_________     ___/\/\___     _/\/\____/\/\_  
---     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_   
---    _/\/\_________     ___/\/\___     _/\/\____/\/\_    
---   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___     
---  ______________     __________     ______________      
+--       _/\/\/\/\/\/\_     _/\/\/\/\_     ___/\/\/\/\___
+--      _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--     _/\/\/\/\/\___     ___/\/\___     _/\/\____/\/\_
+--    _/\/\_________     ___/\/\___     _/\/\____/\/\_
+--   _/\/\_________     _/\/\/\/\_     ___/\/\/\/\___
+--  ______________     __________     ______________
 --  LEGv8 CPU Assembler, CPU, and I/O System
 --  "I want to take responsibility for my work to the very end" --Fio Piccolo
--- 
+--
 --  shifter.vhd
---  Charles DePalma | Michael Riegert | Zev Pogrebin
+--  Charles DePalma | Margret Riegert | Zev Pogrebin
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -44,6 +44,6 @@ begin
     with enable select Rnout <=
         shifterd when '1',
         Rnin     when others;
-        
+
 
 end architecture; -- arch
